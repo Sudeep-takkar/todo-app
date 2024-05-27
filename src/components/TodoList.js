@@ -23,6 +23,26 @@ function TodoList({ todos, deleteTodo, editTodo }) {
   const [modalValue, setModalValue] = useState({});
   const [isOpen, setIsOpen] = useState(false);
 
+
+
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  function handleDeleteClick(todo) {
+    setIsDeleteOpen(true);
+    setModalValue(todo);
+  }
+
+  function closeDeleteModal() {
+    setIsDeleteOpen(false);
+  }
+
+  function handleDeleteConfirm() {
+    deleteTodo(modalValue.id);
+    setIsDeleteOpen(false);
+  }
+
+
+  
+
   function onClose() {
     setIsOpen(false);
   }
@@ -61,7 +81,7 @@ function TodoList({ todos, deleteTodo, editTodo }) {
               <DeleteIcon
                 color="red.500"
                 mr="2"
-                onClick={() => deleteTodo(todo.id)}
+                onClick={() => handleDeleteClick(todo)}
               />
               <EditIcon onClick={() => handleEditClick(todo)} />
             </Flex>
@@ -94,9 +114,40 @@ function TodoList({ todos, deleteTodo, editTodo }) {
                 </form>
               </ModalContent>
             </Modal>
+
+
+
+            <Modal isOpen={isDeleteOpen} onClose={closeDeleteModal}>
+              <ModalOverlay />
+              <ModalContent>
+                <ModalHeader>Delete Your Todo</ModalHeader>
+                <ModalCloseButton />
+                {/* <form onSubmit={handleEditSubmit}> */}
+                <ModalBody>
+                  Are you sure you want to delete this todo?
+                </ModalBody>
+                  <ModalFooter>
+                    <Button colorScheme="teal" mr={3} onClick={handleDeleteConfirm}>
+                    Delete
+                  </Button>
+                  <Button type="submit" mr={3} onClick={closeDeleteModal}>
+                    Cancel
+                  </Button>
+                  </ModalFooter>
+                {/* </form> */}
+              </ModalContent>
+            </Modal>
+
           </Flex>
         </HStack>
+
+
+
+
       ))}
+
+     
+
     </VStack>
   );
 }
